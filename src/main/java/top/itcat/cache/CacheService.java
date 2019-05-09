@@ -2,6 +2,7 @@ package top.itcat.cache;
 
 import org.aspectj.lang.*;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import top.itcat.cache.annotation.LoadingCache;
 import top.itcat.cache.manage.CacheManager;
@@ -20,6 +22,8 @@ import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("all")
+@Component
+@Aspect
 public class CacheService {
     Logger log = LoggerFactory.getLogger(this.getClass());
     private CacheManager cacheManager;
