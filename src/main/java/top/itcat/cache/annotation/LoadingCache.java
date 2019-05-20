@@ -22,7 +22,7 @@ public @interface LoadingCache {
     /**
      * cache param key name
      */
-    String fieldKey() default "";
+    String[] fieldKeys() default {};
 
     /**
      * Redis expire time

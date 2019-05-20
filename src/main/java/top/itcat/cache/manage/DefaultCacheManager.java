@@ -162,6 +162,7 @@ public class DefaultCacheManager<T> implements CacheManager {
     }
 
     @Override
+    @Deprecated
     public void updateAsync(boolean updateAsync, int time) {
         if (!updateAsync) {
             if (task != null) {
@@ -177,6 +178,7 @@ public class DefaultCacheManager<T> implements CacheManager {
     }
 
     @Override
+    @Deprecated
     public void updateAsync(UpdateTaskManager task) {
         if (this.task != null) {
             this.task.stop();

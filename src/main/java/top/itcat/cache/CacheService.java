@@ -1,6 +1,7 @@
 package top.itcat.cache;
 
-import org.aspectj.lang.*;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -12,7 +13,6 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import top.itcat.cache.annotation.LoadingCache;
 import top.itcat.cache.manage.CacheManager;
 import top.itcat.cache.manage.DefaultCacheManager;
@@ -45,13 +45,20 @@ public class CacheService {
         try {
             Method method = getMethod(point);
             LoadingCache loadingCache = method.getAnnotation(LoadingCache.class);
-            String fieldKey = loadingCache.fieldKey();
+            StringBuilder fieldKey = new StringBuilder("");
+            String[] fieldKeys = loadingCache.fieldKeys();
 
-            if (!StringUtils.isEmpty(fieldKey)) {
-                fieldKey = parseKey(fieldKey, method, point.getArgs());
+            if (fieldKeys.length != 0) {
+                for (String key : fieldKeys) {
+                    fieldKey.append(parseKey(key, method, point.getArgs())).append(":");
+                }
             }
 
-            String key = loadingCache.prefix() + fieldKey;
+//            if (!StringUtils.isEmpty(fieldKey)) {
+//                fieldKey = parseKey(fieldKey, method, point.getArgs());
+//            }
+
+            String key = loadingCache.prefix() + ":" + fieldKey.toString();
 
             switch (loadingCache.cacheOperation()) {
                 case QUERY:
